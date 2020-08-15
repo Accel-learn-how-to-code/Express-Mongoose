@@ -1,73 +1,79 @@
 //lấy khai báo db từ db.js
 const db = require('../db');
+//Khai bao model
+var Trans = require('../model/trans.model');
+var Users = require('../model/users.model');
+var Books = require('../model/books.model');
 const shortid = require('shortid');
 
 //đổ dữ liệu ra từ trans/index
-module.exports.index = function (req, res) {
+module.exports.index = async function (req, res) {
+    var trans = await Trans.find();
     //pagination
     var page = parseInt(req.query.page) || 1;
     var perPage = 2;
     var begin = (page - 1) * perPage;
     var end = page * perPage;
-    var total = Math.ceil(Object.keys(db.get('trans').value()).length / perPage);
+    var total = Math.ceil(trans.length / perPage);
 
     res.render('trans/index', {
         totalPage: total,
-        trans: db.get('trans').value().slice(begin, end)
+        trans: trans.slice(begin, end)
     });
 };
 
 //đưa tới trang create
-module.exports.create = function (req, res) {
+module.exports.create = async function (req, res) {
+    var users = await Users.find();
+    var books = await Books.find();
     res.render('trans/create', {
-        users: db.get('users').value(),
-        books: db.get('books').value()
+        users: users,
+        books: books
     });
 };
 
 //post dữ liệu lên trang create 
-module.exports.postCreate = function (req, res) {
+module.exports.postCreate = async function (req, res) {
     req.body.id = shortid.generate();
-    req.body.userId = db.get('users').find({
+    req.body.userId = (await Users.findOne({
         name: req.body.user
-    }).value().id;
-    req.body.bookId = db.get('books').find({
+    })).id;
+    req.body.bookId = (await Books.findOne({
         title: req.body.book
-    }).value().id;
-    req.body.isComplete = "false";
-    db.get('trans').push(req.body).write();
+    })).id;
+    req.body.isComplete = false;
+    var newTrans = new Trans(req.body);
+    await newTrans.save();
     res.redirect('/trans');
 };
 
 //xóa dữ liệu
-module.exports.delete = function (req, res) {
+module.exports.delete = async function (req, res) {
     var id = req.params.id;
-    db.get('trans')
-        .remove({
-            id: id
-        })
-        .write();
+    await Trans.deleteOne({
+        id: id
+    });
     res.render('trans/delete');
 };
 
 //tạo view
-module.exports.view = function (req, res) {
+module.exports.view = async function (req, res) {
     var id = req.params.id;
-    var trans = db.get('trans').find({
+    var trans = await Trans.findOne({
         id: id
-    }).value();
+    });
     res.render('trans/view', {
         trans: trans
     });
 };
 
 //isComplete
-module.exports.isComplete = function (req, res) {
+module.exports.isComplete = async function (req, res) {
     var id = req.params.id;
     //validate
-    var trans = db.get('trans').find({
+    var trans = await Trans.findOne({
         id: id
-    }).value();
+    });
     var error;
     if (!trans) {
         error = 'ID không tồn tại';
@@ -81,15 +87,14 @@ module.exports.isComplete = function (req, res) {
     });
 }
 
-module.exports.isCompletePost = function (req, res) {
+module.exports.isCompletePost = async function (req, res) {
     var id = req.params.id;
-    db.get('trans')
-        .find({
-            id: id
-        })
-        .assign({
+    await Trans.findOneAndUpdate({
+        id: id
+    }, {
+        $set: {
             isComplete: req.body.isComplete
-        })
-        .write();
+        }
+    });
     res.redirect('/trans');
 }

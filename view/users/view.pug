@@ -15,7 +15,7 @@ block content
         .col-12.col-md-4
             .d-flex.justify-content-center
                 if userX.avatar
-                    img.rounded.float-left(src= "/" + userX.avatar, width="300px", height="300px",style="object-fit:cover;")
+                    img.rounded.float-left(src= userX.avatar, width="300px", height="300px",style="object-fit:cover;")
                 else
                     img.rounded.float-left(src="https://picsum.photos/200", width="300px", height="300px",style="object-fit:cover;")
         .col-12.col-md-8          

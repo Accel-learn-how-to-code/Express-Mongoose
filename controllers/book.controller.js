@@ -1,34 +1,30 @@
 //reuire dotenv
 require('dotenv').config();
-//lấy khai báo lowdb từ db.js
-var db = require('../db');
 const shortid = require('shortid');
 //khai báo cloudinary để up ảnh
 var cloudinary = require('cloudinary');
+//Khai bao Model
+var Books = require('../model/books.model');
 
 //trang index của books
-module.exports.index = function (req, res) {
+module.exports.index = async function (req, res) {
+    var books = await Books.find();
     //pagination
     var page = parseInt(req.query.page) || 1;
     var perPage = 2;
     var begin = (page - 1) * perPage;
     var end = page * perPage;
-    var total = Math.ceil(Object.keys(db.get('books').value()).length / perPage);
-    var test = db.get('books').value();
-    var count = "";
-    test.forEach(ele => {
-        count += ele.title + "; ";
-    });
-    console.log(count);
+    var total = Math.ceil(books.length / perPage);
+
     res.render('books/index', {
         totalPage: total,
-        books: db.get('books').value().slice(begin, end)
+        books: books.slice(begin, end)
     });
 };
 
-module.exports.search = function (req, res) {
+module.exports.search = async function (req, res) {
     var q = req.query.q;
-    var booksList = db.get('books').value();
+    var booksList = await Books.find();
     var matchbooks = booksList.filter(function (book) {
         return book.title.toLowerCase().indexOf(q.toLowerCase()) !== -1;
     });
@@ -50,38 +46,37 @@ module.exports.postCreate = async function (req, res) {
         return result;
     });
     req.body.coverUrl = imgURL.url;
-    db.get('books')
-        .push(req.body)
-        .write();
+    var newBook = new Books(req.body);
+    await newBook.save();
     res.redirect('/books');
 };
 
-module.exports.view = function (req, res) {
+module.exports.view = async function (req, res) {
     var id = req.params.id;
-    var book = db.get('books').find({
+    var book = await Books.findOne({
         id: id
-    }).value();
+    });
 
     res.render('books/view', {
         book: book
     });
 };
 
-module.exports.delete = function (req, res) {
+module.exports.delete = async function (req, res) {
     var id = req.params.id;
-    db.get('books').remove({
+    await Books.deleteOne({
         id: id
-    }).write();;
+    });
 
     res.render('books/delete');
 };
 
 //đưa đến trang update để nhập dữ liệu vào form
-module.exports.update = function (req, res) {
+module.exports.update = async function (req, res) {
     var id = req.params.id;
-    var book = db.get('books').find({
+    var book = await Books.findOne({
         id: id
-    }).value();
+    });
 
     res.render('books/update', {
         book: book
@@ -95,12 +90,14 @@ module.exports.postUpdate = async function (req, res) {
         return result;
     });
     req.body.coverUrl = imgURL.url;
-    db.get('books').find({
+    await Books.findOneAndUpdate({
         id: id
-    }).assign({
-        title: req.body.title,
-        description: req.body.description,
-        coverUrl: req.body.coverUrl
-    }).write();
+    }, {
+        $set: {
+            title: req.body.title,
+            description: req.body.description,
+            coverUrl: req.body.coverUrl
+        }
+    });
     res.redirect('/books');
 };
