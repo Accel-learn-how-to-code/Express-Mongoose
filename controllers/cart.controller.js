@@ -1,69 +1,85 @@
 //lấy khai báo lowdb từ db.js
 var db = require('../db');
+var Session = require('../model/session.model');
+var Books = require('../model/books.model');
+var Cart = require('../model/cart.model');
 
-module.exports.index = function (req, res) {
+module.exports.index = async function (req, res) {
+    var sessionId = req.signedCookies.sessionId;
+    //count product in cart
+    if (!sessionId) {
+        res.redirect('/product');
+        return;
+    };
 
-    if (req.signedCookies.sessionId) {
-        //count product in cart
-        var sessionCart = db.get('session').find({
-            id: req.signedCookies.sessionId
-        });
-        var count = 0;
-        var data = sessionCart.get('cart').value();
-        for (key in data) {
-            if (data.hasOwnProperty(key)) {
-                var value = data[key];
-                count += value;
-            }
-        }
-
-        //get Array of Book Name
-        var books = [];
-        for (key in data) {
-            var value = data[key];
-            var bookName = db.get('books').find({
-                id: key
-            }).get('title').value();
-            var pic = db.get('books').find({
-                id: key
-            }).get('coverUrl').value();
-            var book = {
-                id: key,
-                title: bookName,
-                quantity: value,
-                coverUrl: pic
-            }
-            books.push(book);
-        }
+    var session = await Session.findOne({
+        id: sessionId
+    });
+    var count = 0;
+    var data = session.cart;
+    for (let key of data) {
+        count += key.quantity;
     }
 
+    //get Array of Book Name
+    var books = [];
+    for (let key of data) {
+        var quantity = key.quantity;
+        var selectBook = await Books.findOne({
+            id: key.bookId
+        });
+        var title = selectBook.title;
+        var pic = selectBook.coverUrl;
+        var book = {
+            id: key.bookId,
+            title: title,
+            quantity: quantity,
+            coverUrl: pic
+        }
+        books.push(book);
+    }
     res.render('cart/index', {
         totalBook: count,
         books: books
     });
 }
 
-module.exports.addToCart = function (req, res) {
+module.exports.addToCart = async function (req, res) {
     var bookId = req.params.bookId;
     var sessionId = req.signedCookies.sessionId;
 
     if (!sessionId) {
         res.redirect('/product');
         return;
+    };
+    var session = await Session.findOne({
+        id: sessionId
+    });
+    if (bookId) {
+        var book = session.cart.find(
+            cartItem => cartItem.bookId === bookId
+        );
+        if (book) {
+            book.quantity += 1;
+            session.save();
+        } else {
+            await Session.findOneAndUpdate({
+                id: sessionId
+            }, {
+                $push: {
+                    cart: {
+                        bookId: bookId,
+                        quantity: 1
+                    }
+                }
+            });
+        }
     }
-
-    var count = db.get('session').find({
-        id: sessionId,
-    }).get('cart.' + bookId, 0).value();
-
-    db.get('session').find({
-        id: sessionId,
-    }).set('cart.' + bookId, count + 1).write();
 
     res.redirect('/product');
 }
 
-module.exports.deleteItem = function (req, res) {
+module.exports.deleteItem = async function (req, res) {
     var bookId = req.params.bookId;
     var sessionId = req.signedCookies.sessionId;
 
@@ -71,31 +87,48 @@ module.exports.deleteItem = function (req, res) {
         res.redirect('/product');
         return;
     }
+    var session = await Session.findOne({
+        id: sessionId
+    });
 
-    db.get('session').find({
-        id: sessionId,
-    }).unset('cart.' + bookId).write();
-
+    var book = session.cart;
+    book = book.filter(function (obj) {
+        return obj.bookId !== bookId;
+    });
+    await Session.findOneAndUpdate({
+        id: sessionId
+    }, {
+        $set: {
+            cart: book
+        }
+    });
     res.redirect('/cart');
 }
 
-module.exports.checkout = function (req, res) {
+module.exports.checkout = async function (req, res) {
     var sessionId = req.signedCookies.sessionId;
     var userId = req.signedCookies.userID;
 
-    var sessionCart = db.get('session').find({
+    var session = await Session.findOne({
         id: sessionId
     });
-    var data = sessionCart.get('cart').value();
+    var data = session.cart;
 
-    var user = {
+    var userCart = {
         id: userId,
         cart: data
     };
 
-    db.get('transactions').push(user).write();
+    var newCart = new Cart(userCart);
+    await newCart.save();
 
-    db.get('session').remove({ id: sessionId }).write();
+    await Session.findOneAndUpdate({
+        id: sessionId
+    }, {
+        $set: {
+            cart: []
+        }
+    });
 
     res.render('cart/delete');
 }

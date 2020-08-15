@@ -1,31 +1,34 @@
 //lấy khai báo lowdb từ db.js
-var db = require('../db');
+//var db = require('../db');
 
-module.exports.index = function (req, res) {
+var Books = require('../model/books.model');
+var Session = require('../model/session.model');
+
+module.exports.index = async function (req, res) {
+    var books = await Books.find();
+    var sessionId = req.signedCookies.sessionId;
+
     //pagination
     var page = parseInt(req.query.page) || 1;
     var perPage = 4;
     var begin = (page - 1) * perPage;
     var end = page * perPage;
-    var total = Math.ceil(Object.keys(db.get('books').value()).length / perPage);
+    var total = Math.ceil(books.length / perPage);
 
     //count product in cart
-    if (req.signedCookies.sessionId) {
-        var sessionCart = db.get('session').find({
-            id: req.signedCookies.sessionId
+    if (sessionId) {
+        var session = await Session.findOne({
+            id: sessionId
         });
         var count = 0;
-        var data = sessionCart.get('cart').value();
-        for(key in data) {
-            if(data.hasOwnProperty(key)) {
-                var value = data[key];
-                count += value;
-            }
+        for (let book of session.cart) {
+            count += book.quantity;
         }
     }
+
     res.render('products/index', {
         totalBook: count,
         totalPage: total,
-        books: db.get('books').value().slice(begin, end)
+        books: books.slice(begin, end)
     })
 }
