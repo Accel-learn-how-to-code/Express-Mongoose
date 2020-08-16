@@ -67,7 +67,7 @@ module.exports.view = async function (req, res) {
 
 module.exports.delete = async function (req, res) {
     var id = req.params.id;
-    var user = await Users.deleteOne({
+    await Users.deleteOne({
         id: id
     });
 

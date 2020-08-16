@@ -1,5 +1,5 @@
-//lấy khai báo lowdb từ db.js
-var db = require('../db');
+//khai bao model
+var Users = require('../model/users.model');
 var bcrypt = require('bcrypt');
 
 //SendGrid mail khi nhập sai pass quá nhiều
@@ -10,7 +10,7 @@ module.exports.index = function (req, res) {
     res.render('auth/index');
 }
 
-module.exports.postLogin = function (req, res) {
+module.exports.postLogin = async function (req, res) {
     var email = req.body.email;
     var pass = req.body.password;
 
@@ -30,10 +30,7 @@ module.exports.postLogin = function (req, res) {
         });
         return;
     };
-
-    var user = db.get('users').find({
-        email: email
-    }).value();
+    var user = await Users.findOne({email: email});
 
     if (!user) {
         errors = 'Email không tồn tại';
@@ -70,16 +67,16 @@ module.exports.postLogin = function (req, res) {
         return res.render('404');
     }
 
-    bcrypt.compare(pass, user.pass, function (err, result) {
+    bcrypt.compare(pass, user.pass, async function (err, result) {
         if (!result) {
             //set số lần nhập sai pass
             var countWrong = Number(user.wrongLoginCount);
             countWrong++;
-            db.get('users').find({
-                email: email
-            }).assign({
-                wrongLoginCount: countWrong
-            }).write();
+            await Users.findOneAndUpdate({email: email},{
+                $set:{
+                    wrongLoginCount: countWrong
+                }
+            });
 
             errors = 'Password không đúng';
             res.render('auth/index', {
@@ -98,12 +95,11 @@ module.exports.postLogin = function (req, res) {
 
     //set lại số lần nhập sai pass
     var countWrong = 0;
-    db.get('users').find({
-        email: email
-    }).assign({
-        wrongLoginCount: countWrong
-    }).write();
-
+    await Users.findOneAndUpdate({email: email},{
+        $set:{
+            wrongLoginCount: countWrong
+        }
+    });
     if (user.isAdmin === true) {
         res.cookie('isAdmin', true, {
             signed: true

@@ -25,6 +25,11 @@ const productRouter = require('./router/product.router');
 const cartRouter = require('./router/cart.router');
 const authMiddleware = require('./middleware/auth.middleware');
 const sessionMiddleware = require('./middleware/session.middleware');
+//Khai bao api
+const apiTransaction = require('./api/router/trans.router');
+const apiAuth = require('./api/router/auth.router');
+const apiBooks = require('./api/router/book.router');
+const apiUsers = require('./api/router/user.router');
 
 //thiết lập template PUG
 app.set('view engine', 'pug');
@@ -53,6 +58,11 @@ app.use(express.static('public'));
 app.use(sessionMiddleware);
 
 //sử dụng router
+app.use('/api/trans', apiTransaction);
+app.use('/api/auth', apiAuth);
+app.use('/api/books', apiBooks);
+app.use('/api/users', apiUsers);
+
 app.use('/auth/login', authRouter);
 app.use('/users', authMiddleware.requireAuth, authMiddleware.isAdmin, userRoute);
 app.use('/books', authMiddleware.requireAuth, authMiddleware.isAdmin, bookRoute);
