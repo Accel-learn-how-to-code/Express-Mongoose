@@ -14,6 +14,6 @@ router.get('/:id/delete', controller.delete);
 
 router.post('/', controller.postCreate);
 
-router.post('/:id/update', controller.postUpdate);
+router.patch('/:id/update', controller.postUpdate);
 
 module.exports = router;

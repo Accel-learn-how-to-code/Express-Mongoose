@@ -17,5 +17,5 @@ router.get('/:id/delete', controller.delete);
 
 router.get('/:id', controller.view);
 
-router.post('/:id/complete', controller.isCompletePost);
+router.patch('/:id/complete', controller.isCompletePost);
 
