@@ -7,7 +7,9 @@
       "pass": "$2b$10$k5Y3bFJExmR4lRaICkhqfeJdjs/rK033c4s1oOdDNGmQALhL5dRR6",
       "isAdmin": true,
       "wrongLoginCount": 0,
-      "avatar": ""
+      "avatar": "",
+      "isShop": true,
+      "shopName": "Huyền xinh"
     },
     {
       "name": "Võ Đình Hoàng Long",
@@ -16,7 +18,9 @@
       "pass": "$2b$10$k5Y3bFJExmR4lRaICkhqfeJdjs/rK033c4s1oOdDNGmQALhL5dRR6",
       "isAdmin": true,
       "wrongLoginCount": 0,
-      "avatar": ""
+      "avatar": "",
+      "isShop": true,
+      "shopName": "Accel"
     },
     {
       "name": "Võ Anh Khoa",
@@ -25,7 +29,9 @@
       "pass": "$2b$10$k5Y3bFJExmR4lRaICkhqfeJdjs/rK033c4s1oOdDNGmQALhL5dRR6",
       "isAdmin": false,
       "wrongLoginCount": 0,
-      "avatar": ""
+      "avatar": "",
+      "isShop": false,
+      "shopName": ""
     },
     {
       "name": "Hồ Hoài Sản",
@@ -34,7 +40,9 @@
       "pass": "$2b$10$k5Y3bFJExmR4lRaICkhqfeJdjs/rK033c4s1oOdDNGmQALhL5dRR6",
       "isAdmin": false,
       "wrongLoginCount": 0,
-      "avatar": ""
+      "avatar": "",
+      "isShop": false,
+      "shopName": ""
     },
     {
       "name": "gj",
@@ -43,7 +51,9 @@
       "avatar": "http://res.cloudinary.com/dqaldb7bh/image/upload/v1596733392/k2vnsjhrq2l0ovdggn6h.png",
       "isAdmin": false,
       "wrongLoginCount": 0,
-      "pass": "$2b$10$k5Y3bFJExmR4lRaICkhqfeJdjs/rK033c4s1oOdDNGmQALhL5dRR6"
+      "pass": "$2b$10$k5Y3bFJExmR4lRaICkhqfeJdjs/rK033c4s1oOdDNGmQALhL5dRR6",
+      "isShop": false,
+      "shopName": ""
     },
     {
       "name": "Vakpro",
@@ -52,16 +62,20 @@
       "avatar": "http://res.cloudinary.com/dqaldb7bh/image/upload/v1596734520/y04bincajrmhc3s5ztpo.png",
       "isAdmin": false,
       "wrongLoginCount": 0,
-      "pass": "$2b$10$k5Y3bFJExmR4lRaICkhqfeJdjs/rK033c4s1oOdDNGmQALhL5dRR6"
+      "pass": "$2b$10$k5Y3bFJExmR4lRaICkhqfeJdjs/rK033c4s1oOdDNGmQALhL5dRR6",
+      "isShop": false,
+      "shopName": ""
     },
     {
-      "name": "asdasd",
+      "name": "Nah",
       "email": "aa@gmail.com",
       "id": "axg69YZgS",
       "avatar": "http://res.cloudinary.com/dqaldb7bh/image/upload/v1596794180/twqolndfdnmci0p994ve.jpg",
       "isAdmin": false,
       "wrongLoginCount": 0,
-      "pass": "$2b$10$k5Y3bFJExmR4lRaICkhqfeJdjs/rK033c4s1oOdDNGmQALhL5dRR6"
+      "pass": "$2b$10$k5Y3bFJExmR4lRaICkhqfeJdjs/rK033c4s1oOdDNGmQALhL5dRR6",
+      "isShop": false,
+      "shopName": ""
     },
     {
       "name": "testtttt",
@@ -70,7 +84,9 @@
       "avatar": "http://res.cloudinary.com/dqaldb7bh/image/upload/v1596794294/a13tolgi1lqwqtn2mpli.jpg",
       "isAdmin": false,
       "wrongLoginCount": 0,
-      "pass": "$2b$10$k5Y3bFJExmR4lRaICkhqfeJdjs/rK033c4s1oOdDNGmQALhL5dRR6"
+      "pass": "$2b$10$k5Y3bFJExmR4lRaICkhqfeJdjs/rK033c4s1oOdDNGmQALhL5dRR6",
+      "isShop": false,
+      "shopName": ""
     },
     {
       "name": "asdasd",
@@ -79,40 +95,53 @@
       "avatar": "http://res.cloudinary.com/dqaldb7bh/image/upload/v1596816466/afqmwih5egorem1wnlmi.jpg",
       "isAdmin": false,
       "wrongLoginCount": 0,
-      "pass": "$2b$10$k5Y3bFJExmR4lRaICkhqfeJdjs/rK033c4s1oOdDNGmQALhL5dRR6"
+      "pass": "$2b$10$k5Y3bFJExmR4lRaICkhqfeJdjs/rK033c4s1oOdDNGmQALhL5dRR6",
+      "isShop": false,
+      "shopName": ""
     }
   ],
   "books": [
     {
       "title": "Cuộc chiến siêu nhiên giữa đời thường",
       "description": "Crush trong một giấc mơ",
-      "id": "xjoLnaIT9"
+      "id": "xjoLnaIT9",
+      "coverUrl": "",
+      "shopId": "U6K3wCr0G"
     },
     {
       "title": "Game Of Thrones",
       "description": "vì sao lại vậy",
-      "id": "U6K3wCr0G"
+      "id": "U6K3wCr0G",
+      "coverUrl": "",
+      "shopId": "U6K3wCr0G"
     },
     {
       "title": "Ánh Trăng",
       "description": "vì sau này em là của anh",
-      "id": "uyhm76Gja"
+      "id": "uyhm76Gja",
+      "coverUrl": "",
+      "shopId": "xjoLnaIT9"
     },
     {
       "title": "Tư tưởng Hồ Chí Minh",
       "description": "nope",
-      "id": "3_WwDWz3E"
+      "id": "3_WwDWz3E",
+      "coverUrl": "",
+      "shopId": "U6K3wCr0G"
     },
     {
       "title": "Định Mệnh",
       "description": "Nhớ Crush",
-      "id": "VZfbqE9ij"
+      "id": "VZfbqE9ij",
+      "coverUrl": "",
+      "shopId": "xjoLnaIT9"
     },
     {
       "title": "Dạy code 2",
       "description": "nope",
       "id": "K_hhcIa7w",
-      "coverUrl": "http://res.cloudinary.com/dqaldb7bh/image/upload/v1596818199/uynmozj24cyrxpticjnt.jpg"
+      "coverUrl": "http://res.cloudinary.com/dqaldb7bh/image/upload/v1596818199/uynmozj24cyrxpticjnt.jpg",
+      "shopId": "xjoLnaIT9"
     }
   ],
   "trans": [

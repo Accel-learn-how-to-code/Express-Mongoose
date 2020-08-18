@@ -10,7 +10,8 @@ var upload = multer({
 
 //lấy các function từ user.controller
 var controller = require('../controllers/user.controller');
-var validate = require('../validate/user.validate')
+var validate = require('../validate/user.validate');
+var middleware = require('../middleware/auth.middleware');
 
 //sử dụng function
 router.get('/', controller.index);

@@ -1,0 +1,25 @@
+extend ../layouts/common
+
+block content
+    nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.mb-3
+        a.navbar-brand(href='#')
+            img(src="/images/p1.jpg", alt="lolol",width="30", height="30",loading="lazy")
+        a.navbar-brand(href='#') CREATE BOOK
+        #navbarNav.collapse.navbar-collapse
+            ul.navbar-nav
+                li.nav-item
+                    a.nav-link(href='/shop/' + shopId) Home
+        if user
+            p(style ="color:white;")= user.name                    
+    if errors   
+        each error in errors
+            .alert.alert-danger(role='alert')= error
+    form(action="/shop/"+ shopId + "/create", method='post', enctype="multipart/form-data")
+        .form-group
+            label(for='bookName') Book
+            input#bookName.form-control(type='text', name='title', value = values ? values.title : '')
+            label(for='bookDescription') Description
+            input#bookDescription.form-control(type='text', name='description',value = values ? values.description : '')
+            label(for='bookAvatar') Cover Page
+            input#bookAvatar.form-control-file(type='file', name='coverUrl')
+        button.btn.btn-primary(type='submit') Create

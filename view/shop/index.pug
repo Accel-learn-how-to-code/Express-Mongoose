@@ -1,0 +1,49 @@
+extend ../layouts/common
+
+block content
+    nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.mb-3
+        a.navbar-brand(href='#')
+            img(src="/images/p1.jpg", alt="lolol",width="30", height="30",loading="lazy")
+        a.navbar-brand(href='#') SHOP
+        #navbarNav.collapse.navbar-collapse
+            ul.navbar-nav
+                li.nav-item
+                    a.nav-link(href='/shop/' + shopId) Home
+        if user
+            p(style ="color:white;")= user.name                    
+
+    form(action= "/shop/"+ shopId + "/search" method="get")
+        .form-group
+            label(for='exampleInputEmail1') Tìm kiếm
+            input#exampleInputEmail1.form-control(type='text', name='q',value= value?value.q:'')
+        button.btn.btn-primary(type='submit') Search
+    .mt-3.mb-3
+        a.btn.btn-success(href= "/shop/"+ shopId + "/create") Thêm sách
+    table.table.table-bordered
+        thead.thead-dark
+            tr
+                th(scope='col') Cover
+                th(scope='col') Book Title
+                th(scope='col') 
+                th(scope='col') 
+                th(scope='col') 
+        tbody
+            each val in books
+                tr 
+                    td.text-center
+                        if val.coverUrl
+                            img.rounded(src= val.coverUrl, width="64px", height="64px",style="object-fit:cover;")
+                        else
+                            img.rounded(src="https://picsum.photos/200", width="64px", height="64px",style="object-fit:cover;")
+                    td.text-center= val.title
+                    td.text-center
+                        a.btn.btn-light(href= "/shop/" + shopId + "/book/" + val.id) View
+                    td.text-center
+                        a.btn.btn-light(href= "/shop/" + shopId + "/book/" + val.id + "/update") Update
+                    td.text-center
+                        a.btn.btn-light(href= "/shop/" + shopId + "/book/" +  val.id + "/delete") Delete
+    ul.pagination.justify-content-center
+        -for (i = 1; i <= totalPage; i++){
+            li.page-item
+                a.page-link(href="?page=" + i)= i
+        -}

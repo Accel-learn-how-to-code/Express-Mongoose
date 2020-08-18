@@ -1,0 +1,32 @@
+extend ../layouts/common
+
+block content
+    nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.mb-3
+        a.navbar-brand(href='#')
+            img(src="/images/p1.jpg", alt="lolol",width="30", height="30",loading="lazy")
+        a.navbar-brand(href='#') VIEW BOOK
+        #navbarNav.collapse.navbar-collapse
+            ul.navbar-nav
+                li.nav-item
+                    a.nav-link(href='/shop/' + shopId) Home
+        if user
+            p(style ="color:white;")= user.name 
+    .row        
+        .col-12.col-md-4
+            .d-flex.justify-content-center
+                if book.coverUrl
+                    img.rounded.float-left(src= book.coverUrl, width="300px", height="300px",style="object-fit:cover;")
+                else
+                    img.rounded.float-left(src="https://picsum.photos/200", width="300px", height="300px",style="object-fit:cover;")
+        .col-12.col-md-8                               
+            table.table.table-bordered
+                thead.thead-dark
+                    tr
+                        th(scope='col') ID
+                        th(scope='col') Title
+                        th(scope='col') Description
+                tbody
+                    tr
+                        td= book.id
+                        td= book.title
+                        td= book.description

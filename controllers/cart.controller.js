@@ -76,7 +76,8 @@ module.exports.addToCart = async function (req, res) {
         }
     }
 
-    res.redirect('/product');
+    backURL = req.header('Referer') || '/';
+    res.redirect(backURL);
 }
 
 module.exports.deleteItem = async function (req, res) {

@@ -105,3 +105,4 @@ module.exports.postUpdate = async function (req, res) {
 
     res.redirect('/users');
 };
+

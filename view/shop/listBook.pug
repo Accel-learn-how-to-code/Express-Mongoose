@@ -8,14 +8,12 @@ block content
         #navbarNav.collapse.navbar-collapse
             ul.navbar-nav
                 li.nav-item
-                    a.nav-link(href='/product') Home
+                    a.nav-link(href='/shop/' + shopId + '/book') Home
                 li.nav-item
                     a.nav-link(href='/cart') Cart 
                         span= totalBook?totalBook:0
         if user
             p(style ="color:white;")= user.name
-    .mt-3.mb-3
-        a.btn.btn-success(href= "/shop//create/createShop") Tạo shop
     .row
         each val in books
             .col-6.col-md-3

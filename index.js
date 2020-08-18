@@ -23,8 +23,12 @@ const transRouter = require('./router/trans.router');
 const authRouter = require('./router/auth.router');
 const productRouter = require('./router/product.router');
 const cartRouter = require('./router/cart.router');
+const shopRouter = require('./router/shop.router');
+
+//Khai bao middleware
 const authMiddleware = require('./middleware/auth.middleware');
 const sessionMiddleware = require('./middleware/session.middleware');
+
 //Khai bao api
 const apiTransaction = require('./api/router/trans.router');
 const apiAuth = require('./api/router/auth.router');
@@ -69,6 +73,7 @@ app.use('/books', authMiddleware.requireAuth, authMiddleware.isAdmin, bookRoute)
 app.use('/trans', authMiddleware.requireAuth, transRouter);
 app.use('/product', productRouter);
 app.use('/cart', cartRouter);
+app.use('/shop', shopRouter);
 
 //notification của server
 app.listen(port, function () {

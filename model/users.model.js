@@ -7,7 +7,9 @@ var usersSchema = mongoose.Schema({
     pass: String,
     isAdmin: Boolean,
     wrongLoginCount: Number,
-    avatar: String
+    avatar: String,
+    isShop: Boolean,
+    shopName: String
 });
 
 var Users = mongoose.model('Users', usersSchema, 'users');
