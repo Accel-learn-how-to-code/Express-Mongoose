@@ -11,8 +11,8 @@ block content
                     a.nav-link(href='/books') Home
         if user
             p(style ="color:white;")= user.name                    
-    if errors   
-        each error in errors
+    if bookErrors   
+        each error in bookErrors
             .alert.alert-danger(role='alert')= error
     form(action='/books/create', method='post', enctype="multipart/form-data")
         .form-group

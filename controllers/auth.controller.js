@@ -14,8 +14,9 @@ module.exports.postLogin = async function (req, res) {
     var email = req.body.email;
     var pass = req.body.password;
 
+    var errors = []
     if (!email) {
-        errors = 'Email không được để trống';
+        errors.push('Email không được để trống');
         res.render('auth/index', {
             errors: errors,
             value: req.body
@@ -23,7 +24,7 @@ module.exports.postLogin = async function (req, res) {
         return;
     };
     if (!pass) {
-        errors = 'Password không được để trống';
+        errors.push('Password không được để trống');
         res.render('auth/index', {
             errors: errors,
             value: req.body
@@ -33,9 +34,9 @@ module.exports.postLogin = async function (req, res) {
     var user = await Users.findOne({email: email});
 
     if (!user) {
-        errors = 'Email không tồn tại';
+        errors.push('Email không tồn tại');
         res.render('auth/index', {
-            errors: errors,
+            authErrors: errors,
             value: req.body
         });
         return;

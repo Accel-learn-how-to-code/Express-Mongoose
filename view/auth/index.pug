@@ -9,8 +9,9 @@ block content
             ul.navbar-nav
                 li.nav-item
                     a.nav-link(href='/users') Home
-    if errors    
-        .alert.alert-danger(role='alert')= errors
+    if authErrors 
+        each error in authErrors
+            .alert.alert-danger(role='alert')= error
     form(action='/auth/login', method='post')
         .form-group
             label(for='exampleInputEmail1') Email

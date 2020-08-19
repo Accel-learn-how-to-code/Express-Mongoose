@@ -11,8 +11,8 @@ block content
                     a.nav-link(href='/users') Home
         if user
             p(style ="color:white;")= user.name     
-    if errors    
-        each error in errors
+    if usersErrors    
+        each error in usersErrors
             .alert.alert-danger(role='alert')= error
     .row
         .col-12.col-md-4

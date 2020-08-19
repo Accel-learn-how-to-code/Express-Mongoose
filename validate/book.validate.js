@@ -6,7 +6,7 @@ module.exports.postCreate = function (req, res, next) {
         bookErrors.push('Description không được để trống');
     if (bookErrors.length) {
         res.render('books/create', {
-            errors: bookErrors,
+            bookErrors: bookErrors,
             values: req.body
         });
         return;
