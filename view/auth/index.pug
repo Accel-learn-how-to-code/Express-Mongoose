@@ -14,8 +14,8 @@ block content
             .alert.alert-danger(role='alert')= error
     form(action='/auth/login', method='post')
         .form-group
-            label(for='exampleInputEmail1') Email
+            label(for='exampleInputEmail1') Email cho việc test: cyberpunk1202@gmail.com
             input#exampleInputEmail1.form-control(type='email', name='email', value= value?value.email:'')
-            label(for='exampleInputEmail1') Password
+            label(for='exampleInputEmail1') Password cho việc test: 123123
             input#exampleInputEmail1.form-control(type='password', name='password', value= value? value.password:'')
         button.btn.btn-primary(type='submit') Login
