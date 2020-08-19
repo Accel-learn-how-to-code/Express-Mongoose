@@ -3,24 +3,24 @@ var db = require('../db');
 
 module.exports.postCreate = function (req, res, next) {
     //validate
-    var errors = [];
+    var usersErrors = [];
     var email = req.body.email;
     var user = db.get('users').find({
         email: email
     }).value();
     if (!req.body.name)
-        errors.push('Tên không được để trống');
+        usersErrors.push('Tên không được để trống');
 
     if (req.body.name.length > 30)
-        errors.push('Tên không được quá 30 ký tự');
+        usersErrors.push('Tên không được quá 30 ký tự');
 
     if (user) {
-        errors.push('Email đã được sử dụng!');
+        usersErrors.push('Email đã được sử dụng!');
     }
 
-    if (errors.length) {
+    if (usersErrors.length) {
         res.render('users/create', {
-            errors: errors,
+            errors: usersErrors,
             value: req.body
         });
         return;

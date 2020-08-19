@@ -1,12 +1,12 @@
 module.exports.postCreate = function (req, res, next) {
-    var errors = [];
+    var bookErrors = [];
     if (!req.body.title)
-        errors.push('Title không được để trống');
+        bookErrors.push('Title không được để trống');
     if (!req.body.description)
-        errors.push('Description không được để trống');
-    if (errors.length) {
+        bookErrors.push('Description không được để trống');
+    if (bookErrors.length) {
         res.render('books/create', {
-            errors: errors,
+            errors: bookErrors,
             values: req.body
         });
         return;
