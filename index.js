@@ -12,7 +12,7 @@ app.use(bodyParser.urlencoded({
 }));
 //Use MongoDB
 const mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/express_codersX');
+mongoose.connect(process.env.MONGODB_URI);
 
 app.use(cookieParser(process.env.SESSION_SECRET));
 
